@@ -1,0 +1,75 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+#container {
+  background-color: lightblue;
+  width: 1250px;
+  margin: 0 auto;
+  padding-left: 130px;
+  padding-bottom: 40px;
+  /* text-align: center; */
+}
+
+h1 {
+  padding-top: 10px;
+}
+
+.section {
+  width: 450px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+label {
+  margin-right: 30px;
+  width: 100px;
+}
+
+input {
+  width: 300px;
+}
+
+button {
+  background-color: blue;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+/* a {
+  display: block;
+  margin: 0 0 10px 450px;
+} */
+
+/* Success HTML */
+
+.message input {
+  width: 700px;
+  height: 75px;
+}
+
+.message button {
+  background-color: blue;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  /* margin-top: 5px; */
+  margin: 3px 0 10px 580px;
+}
+
+.messages {
+  color: red;
+}
+
+.logout {
+  display: block;
+  margin: 0 0 10px 300px;
+}
+
+.comment {
+  background-color: green;
+  /* color: black; */
+}

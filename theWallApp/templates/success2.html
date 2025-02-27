@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+    <title>Message Wall</title>
+  </head>
+  <body>
+    <div id="container">
+      <div class="message">
+        <h1>CodingDojo The Wall... Welcome {{ user.first_name }}</h1>
+        <a href="/logout">Logout {{ user.first_name }}</a>
+        <h6>Post a message</h6>
+        <form action="/create_message" method="POST">
+          {% csrf_token %}
+          <input type="text" name="content" />
+          <button>Post a message</button>
+        </form>
+      </div>
+
+      <div>
+        {% if all_messages %} {% for message in all_messages %}
+        <!-- <div> -->
+        <h6>{{ message.poster.first_name }} {{ message.poster.last_name }}</h6>
+        <p>{{ message.content }}</p>
+        <p>{{ message.created_at }}</p>
+        {% if wall_message.post_comments %} {% for comment in
+        wall_message.post_comments %}
+        <h6>{{comment.poster.first_name}} {{comment.poster.first_name}}</h6>
+        <h6>{{comment.content}}</h6>
+        {% endfor %} {% endif %}
+        <form action="/post_comment/{wall_message.id} " method="POST">
+          {% csrf_token %}
+          <input type="text" name="post_comment" />
+          <button>Post a message</button>
+        </form>
+        <!-- </div> -->
+        {% endfor %} {% endif %}
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+    <title>Message Wall</title>
+  </head>
+  <body>
+    <div id="container">
+      <div class="message">
+        <h1>CodingDojo The Wall... Welcome {{ user.first_name }}</h1>
+        <a class="logout" href="/logout">Logout {{ user.first_name }}</a>
+
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
+        <h6>Post a message</h6>
+        <form action="/create_message" method="POST">
+          {% csrf_token %}
+          <textarea name="content" cols="95" rows="3"></textarea>
+          <button>Post a message</button>
+        </form>
+      </div>
+
+      {% for message in all_messages %}
+      <div class="message">
+        <h6>
+          Posted By:
+          <a href="/user/{{message.poster.id}} ">
+            {{ message.poster.first_name }} {{ message.poster.last_name }}</a
+          >
+          <br />
+
+          <!-- <a href="/like/{{post.id}}">Like Post</a>
+          <p>{{ post.user_likes.count }}</p>  -->
+
+          {% if message.poster.id == request.session.user_id %}
+          <a href="/delete/{{message.id}}">Delete Message</a>
+          {% endif %}
+        </h6>
+        <p>{{ message.content }}</p>
+        <p>{{ message.created_at }}</p>
+
+        {% for comment in message.post_comments.all %}
+        <p>
+          Comment By: {{comment.poster.first_name}} {{comment.poster.last_name}}
+        </p>
+        {% if comment.poster.id == request.session.user_id %}
+        <a href="/comm_delete/{{comment.id}}">Delete Comment</a>
+        {% endif %}
+        <p>{{comment.content}}</p>
+        <p>{{comment.created_at}}</p>
+        {% endfor %}
+        <p>Comment:</p>
+        <form action="/create_comment" method="POST">
+          {% csrf_token %}
+          <textarea name="content" cols="95" rows="2"></textarea>
+          <input type="hidden" name="message" value="{{message.id}}" />
+          <button class="comment">Post a comment</button>
+        </form>
+      </div>
+      <br />
+      {% endfor %}
+    </div>
+  </body>
+</html>
