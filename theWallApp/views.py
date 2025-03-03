@@ -63,7 +63,7 @@ def logout(request):
 
 
 ## Wall FUNCTIONALITY ##
-# CREATE Post, Comment
+# CREATE Post, Comment-Integrate the ability to Post a message or comment on someone else’s message
 def create_mess(request):
     if request.method == 'POST':
         error = Wall_Message.objects.mess_validator(request.POST)
@@ -89,9 +89,8 @@ def create_comm(request):
         return redirect('/success')
     return redirect('/')
 
+
 # READ POST
-
-
 def profile(request, user_id):
     context = {
         'user': User.objects.get(id=user_id)
@@ -104,9 +103,30 @@ def profile(request, user_id):
 #     liked_message.user_likes.add(user_liking)
 #     return redirect('/success')
 
-# DESTROY
+
+def like_message(request, message_id):
+    if 'user_id' not in request.session:
+        messages.error(request, "You need to register or login!")
+        return redirect('/')
+
+    user = User.objects.get(id=request.session['user_id'])
+    message = Wall_Message.objects.get(id=message_id)
+    message.user_likes.add(user)
+    return redirect('/success')
 
 
+def unlike_message(request, message_id):
+    if 'user_id' not in request.session:
+        messages.error(request, "You need to register or login!")
+        return redirect('/')
+
+    user = User.objects.get(id=request.session['user_id'])
+    message = Wall_Message.objects.get(id=message_id)
+    message.user_likes.remove(user)
+    return redirect('/success')
+
+
+# DELETE MESSAGE-Implement delete functionality allowing users to delete only their own messages
 def delete_mess(request, mess_id):
     Wall_Message.objects.get(id=mess_id).delete()
     return redirect('/success')

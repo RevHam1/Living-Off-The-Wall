@@ -48,6 +48,31 @@
           <!-- <a href="/like/{{post.id}}">Like Post</a>
           <p>{{ post.user_likes.count }}</p>  -->
 
+          <ul>
+            {% for message in all_messages %}
+            <li>
+              <p>{{ message.content }}</p>
+              <p>Liked by {{ message.user_likes.count }} users</p>
+              {% if user in message.user_likes.all %}
+              <form
+                action="{% url 'unlike_message' message.id %}"
+                method="POST"
+              >
+                {% csrf_token %}
+                <button type="submit">Unlike</button>
+              </form>
+              <br />
+              {% else %}
+              <form action="{% url 'like_message' message.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit">Like</button>
+              </form>
+              <br />
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+
           {% if message.poster.id == request.session.user_id %}
           <a href="/delete/{{message.id}}">Delete Message</a>
           {% endif %}
